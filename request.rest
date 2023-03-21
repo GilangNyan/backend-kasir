@@ -1,0 +1,80 @@
+# Create Role
+POST http://localhost:5000/role
+Content-Type: application/json
+
+{
+    "nama": "Admin",
+    "deskripsi": "Administrator aplikasi"
+}
+
+###
+
+# Create User
+POST http://localhost:5000/user
+Content-Type: application/json
+
+{
+    "email": "sagilang@gmail.com",
+    "username": "anwar_gilang",
+    "fullname": "Gilang Saeful Anwar",
+    "password": "admin1234",
+    "confPassword": "admin1234",
+    "roleId": "1"
+}
+
+###
+# Get All Users
+GET http://localhost:5000/user
+
+###
+# Get User By UUID
+GET http://localhost:5000/user/22cb4c6b-e09b-46a0-afff-53559e8bd113
+
+###
+# Update User
+PATCH http://localhost:5000/user/22cb4c6b-e09b-46a0-afff-53559e8bd113
+Content-Type: application/json
+
+{
+    "email": "sagilang@gmail.com",
+    "username": "anwar_gilang",
+    "fullname": "Gilang Saeful Anwar",
+    "password": "",
+    "confPassword": "",
+    "roleId": "1"
+}
+
+###
+# Login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "username": "anwar_gilang",
+    "password": "admin1234"
+}
+
+###
+# Me
+GET http://localhost:5000/me
+
+
+###
+# Logout
+DELETE http://localhost:5000/logout
+
+###
+# Kategori
+GET http://localhost:5000/kategori
+
+###
+# Kategori By ID
+GET http://localhost:5000/kategori/1
+
+###
+# Filtered Kategori
+GET http://localhost:5000/kategori?orderBy=nama
+
+###
+# Produk
+GET http://localhost:5000/produk?search=kertas
