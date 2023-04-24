@@ -24,13 +24,17 @@ export const getCustomerById = async (req, res) => {
 };
 
 export const createCustomer = async (req, res) => {
-  const { nama } = req.body;
+  const { nama, email, telepon, alamat } = req.body;
   try {
     await Customer.create({
       nama: nama,
+      email: email,
+      telepon: telepon,
+      alamat: alamat,
     });
     res.status(201).json({ msg: "Customer berhasil ditambahkan" });
   } catch (error) {
+    console.log(error);
     res.status(400).json({ msg: error.message });
   }
 };
@@ -43,11 +47,14 @@ export const updateCustomer = async (req, res) => {
   });
   if (!customer)
     return res.status(404).json({ msg: "Customer tidak ditemukan" });
-  const { nama } = req.body;
+  const { nama, email, telepon, alamat } = req.body;
   try {
     await Customer.update(
       {
         nama: nama,
+        email: email,
+        telepon: telepon,
+        alamat: alamat,
       },
       {
         where: {

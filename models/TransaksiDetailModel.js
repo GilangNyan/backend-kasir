@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 import Produk from "./ProdukModel.js";
+import ProdukSatuan from "./ProdukSatuanModel.js";
 import Transaksi from "./TransaksiModel.js";
 
 const { DataTypes } = Sequelize;
@@ -65,8 +66,17 @@ const TransaksiDetail = db.define(
       },
     },
   },
-  { freezeTableName: true }
+  { freezeTableName: true, timestamps: false }
 );
+
+TransaksiDetail.addHook("afterCreate", (cart) => {
+  ProdukSatuan.decrement("stok", {
+    by: cart.qty,
+    where: {
+      produkBarcode: cart.produkBarcode,
+    },
+  });
+});
 
 Transaksi.hasMany(TransaksiDetail);
 TransaksiDetail.belongsTo(Transaksi);

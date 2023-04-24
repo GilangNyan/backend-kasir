@@ -13,6 +13,9 @@ import RoleRoute from "./routes/RoleRoute.js";
 import PermissionRoute from "./routes/PermissionRoute.js";
 import CustomerRoute from "./routes/CustomerRoute.js";
 import CartRoute from "./routes/CartRoute.js";
+import TransaksiRoute from "./routes/TransaksiRoute.js";
+import SupplierRoute from "./routes/SupplierRoute.js";
+import StokRoute from "./routes/StokRoute.js";
 dotenv.config();
 
 const app = express();
@@ -55,6 +58,9 @@ app.use(RoleRoute);
 app.use(PermissionRoute);
 app.use(CustomerRoute);
 app.use(CartRoute);
+app.use(TransaksiRoute);
+app.use(SupplierRoute);
+app.use(StokRoute);
 
 // store.sync();
 

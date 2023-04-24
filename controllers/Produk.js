@@ -31,6 +31,7 @@ export const getFilteredProduk = async (req, res) => {
   const limit = req.query.perPage || 10;
   const order = req.query.orderBy || "barcode";
   const orderDir = req.query.orderDir || "ASC";
+  const associatedTable = req.query.associatedTable || null;
   const search = req.query.search || "";
   let offset = (parseInt(page) - 1) * parseInt(limit);
   try {
@@ -50,6 +51,12 @@ export const getFilteredProduk = async (req, res) => {
         ],
       },
     });
+    const orderingTable =
+      associatedTable == "kategori"
+        ? Kategori
+        : associatedTable == "satuan"
+        ? Satuan
+        : null;
     const totalPage = Math.ceil(totalRows / limit);
     const response = await Produk.findAll({
       include: [Kategori, Satuan],
@@ -67,7 +74,11 @@ export const getFilteredProduk = async (req, res) => {
           },
         ],
       },
-      order: [[order, orderDir]],
+      order: [
+        orderingTable != null
+          ? [orderingTable, order, orderDir]
+          : [order, orderDir],
+      ],
       offset: offset,
       limit: parseInt(limit),
     });

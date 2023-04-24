@@ -78,3 +78,19 @@ GET http://localhost:5000/kategori?orderBy=nama
 ###
 # Produk
 GET http://localhost:5000/produk?search=kertas
+
+###
+# Customer
+POST http://localhost:5000/customer
+Content-Type: application/json
+
+{
+    "nama": "Al-Mukhtariyyah",
+    "email": "ythozirisabosular@gmail.com",
+    "telepon": "081286511500",
+    "alamat": "Kp. Cimanggu Ds. Sukaratu Kec. Sukaresik Kab. Tasikmalaya"
+}
+
+###
+# Transaksi Count
+POST http://localhost:5000/transaksi

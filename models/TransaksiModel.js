@@ -26,6 +26,10 @@ const Transaksi = db.define(
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
+    tanggal: {
+      type: DataTypes.DATEONLY,
+      defaultValue: DataTypes.NOW,
+    },
     diskonRp: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
@@ -61,6 +65,9 @@ const Transaksi = db.define(
       validate: {
         notEmpty: true,
       },
+    },
+    catatan: {
+      type: DataTypes.TEXT,
     },
   },
   { freezeTableName: true }
