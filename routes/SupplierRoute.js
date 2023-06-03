@@ -12,6 +12,7 @@ import { verifyUser } from "../middlewares/AuthUser.js";
 const router = express.Router();
 
 // Route
+router.get("/supplierall", verifyUser, getSupplier);
 router.get("/supplier", verifyUser, getFilteredSupplier);
 router.get("/supplier/:id", verifyUser, getSupplierById);
 router.post("/supplier", verifyUser, createSupplier);

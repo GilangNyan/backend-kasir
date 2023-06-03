@@ -16,6 +16,7 @@ import CartRoute from "./routes/CartRoute.js";
 import TransaksiRoute from "./routes/TransaksiRoute.js";
 import SupplierRoute from "./routes/SupplierRoute.js";
 import StokRoute from "./routes/StokRoute.js";
+import LaporanRoute from "./routes/LaporanRoute.js";
 dotenv.config();
 
 const app = express();
@@ -61,6 +62,7 @@ app.use(CartRoute);
 app.use(TransaksiRoute);
 app.use(SupplierRoute);
 app.use(StokRoute);
+app.use(LaporanRoute);
 
 // store.sync();
 

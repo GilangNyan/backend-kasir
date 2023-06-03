@@ -12,7 +12,7 @@ import { verifyUser } from "../middlewares/AuthUser.js";
 const router = express.Router();
 
 // Route
-// router.get("/kategori", verifyUser, getKategori);
+router.get("/kategoriall", verifyUser, getKategori);
 router.get("/kategori/:id", verifyUser, getKategoriById);
 router.post("/kategori", verifyUser, createKategori);
 router.patch("/kategori/:id", verifyUser, updateKategori);

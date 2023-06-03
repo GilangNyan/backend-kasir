@@ -92,5 +92,5 @@ Content-Type: application/json
 }
 
 ###
-# Transaksi Count
-POST http://localhost:5000/transaksi
+# Transaksi
+GET http://localhost:5000/laptahunan

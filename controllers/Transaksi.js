@@ -2,7 +2,6 @@ import Transaksi from "../models/TransaksiModel.js";
 import { Op } from "sequelize";
 import Cart from "../models/CartModel.js";
 import TransaksiDetail from "../models/TransaksiDetailModel.js";
-import { response } from "express";
 
 export const getTransaksi = async (req, res) => {
   try {
