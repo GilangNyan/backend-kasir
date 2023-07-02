@@ -26,15 +26,26 @@ export const getTransaksiById = async (req, res) => {
 };
 
 export const createTransaksi = async (req, res) => {
+  // Memasukkan Form Body ke Variabel
+  const {
+    user,
+    customer,
+    diskonRp,
+    diskonPersen,
+    totalBruto,
+    bayar,
+    catatan,
+    tanggalTransaksi,
+  } = req.body;
   // Format tanggal
-  const d = new Date();
-  let tanggal = d.toJSON().slice(0, 10);
+  // const d = new Date();
+  // let tanggal = d.toJSON().slice(0, 10);
   let noFaktur = 0;
-  // Mencari nomor faktur paling tinggi hari ini
+  // Mencari nomor faktur paling tinggi berdasarkan tanggal
   let maxFaktur = await Transaksi.max("faktur", {
     where: {
       tanggal: {
-        [Op.like]: tanggal,
+        [Op.like]: tanggalTransaksi,
       },
     },
   });
@@ -49,22 +60,11 @@ export const createTransaksi = async (req, res) => {
   // Membuat format faktur transaksi
   let faktur =
     "J" +
-    tanggal.slice(0, 4) +
-    tanggal.slice(5, 7) +
-    tanggal.slice(8, 10) +
+    tanggalTransaksi.slice(0, 4) +
+    tanggalTransaksi.slice(5, 7) +
+    tanggalTransaksi.slice(8, 10) +
     String(noFaktur).padStart(4, "0");
 
-  // Memasukkan Form Body ke Variabel
-  const {
-    user,
-    customer,
-    diskonRp,
-    diskonPersen,
-    totalBruto,
-    bayar,
-    catatan,
-    tanggalTransaksi,
-  } = req.body;
   let disPersen = (totalBruto * diskonPersen) / 100;
   let totalNetto = totalBruto - diskonRp - disPersen;
   try {
