@@ -93,4 +93,8 @@ Content-Type: application/json
 
 ###
 # Transaksi
-GET http://localhost:5000/laptahunan
+GET http://localhost:5000/lapproduk
+
+###
+# Forecast
+GET http://localhost:5000/forecast

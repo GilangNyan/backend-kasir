@@ -121,7 +121,7 @@ export const updateProduk = async (req, res) => {
     },
   });
   if (!produk) return res.status(404).json({ msg: "Produk tidak ditemukan" });
-  const { barcode, nama, kategori, satuan, beli, jual, stok } = req.body;
+  const { nama, kategori, satuan, beli, jual, stok } = req.body;
   try {
     await Produk.update(
       {
@@ -142,7 +142,7 @@ export const updateProduk = async (req, res) => {
       },
       {
         where: {
-          produkBarcode: barcode,
+          produkBarcode: produk.barcode,
           satuanId: satuan,
         },
       }

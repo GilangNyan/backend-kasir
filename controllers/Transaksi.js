@@ -55,8 +55,16 @@ export const createTransaksi = async (req, res) => {
     String(noFaktur).padStart(4, "0");
 
   // Memasukkan Form Body ke Variabel
-  const { user, customer, diskonRp, diskonPersen, totalBruto, bayar, catatan } =
-    req.body;
+  const {
+    user,
+    customer,
+    diskonRp,
+    diskonPersen,
+    totalBruto,
+    bayar,
+    catatan,
+    tanggalTransaksi,
+  } = req.body;
   let disPersen = (totalBruto * diskonPersen) / 100;
   let totalNetto = totalBruto - diskonRp - disPersen;
   try {
@@ -64,6 +72,7 @@ export const createTransaksi = async (req, res) => {
       faktur: faktur,
       userId: user,
       customerId: customer,
+      tanggal: tanggalTransaksi,
       diskonRp: diskonRp,
       diskonPersen: diskonPersen,
       totalBruto: totalBruto,

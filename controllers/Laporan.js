@@ -3,6 +3,8 @@ import Transaksi from "../models/TransaksiModel.js";
 import User from "../models/UserModel.js";
 import TransaksiDetail from "../models/TransaksiDetailModel.js";
 import { Op, Sequelize } from "sequelize";
+import Produk from "../models/ProdukModel.js";
+import Satuan from "../models/SatuanModel.js";
 
 export const getLaporanHarian = async (req, res) => {
   const page = req.query.page || 1;
@@ -286,6 +288,64 @@ export const getLaporanTahunan = async (req, res) => {
       totalPage: totalPage,
       result: response.rows,
       totalledValue: totalled,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+export const getLaporanPerProduk = async (req, res) => {
+  const page = req.query.page || 1;
+  const limit = req.query.perPage || 10;
+  const order = req.query.orderBy || "id";
+  const orderDir = req.query.orderDir || "DESC";
+  const search = req.query.search || "";
+  const produk = req.query.produk;
+  const awal = req.query.awal || "2015-01-01";
+  const akhir = req.query.akhir || new Date().toISOString().split("T")[0];
+  let offset = (parseInt(page) - 1) * parseInt(limit);
+
+  const whereProduk = {
+    produkBarcode: produk,
+  };
+
+  try {
+    const response = await TransaksiDetail.findAndCountAll({
+      include: [
+        {
+          model: Transaksi,
+          attributes: ["tanggal"],
+          where: {
+            tanggal: {
+              [Op.between]: [awal, akhir],
+            },
+          },
+        },
+        {
+          model: Produk,
+          attributes: ["nama"],
+          include: [
+            {
+              model: Satuan,
+              attributes: ["nama"],
+            },
+          ],
+        },
+      ],
+      order: Sequelize.literal(
+        "(SELECT tanggal FROM transaksi WHERE faktur = transaksi_detail.transaksiFaktur) DESC"
+      ),
+      where: produk !== "" ? whereProduk : {},
+      offset: offset,
+      limit: parseInt(limit),
+    });
+
+    const totalPage = Math.ceil(response.count / limit);
+
+    res.status(200).json({
+      totalRows: response.count,
+      totalPage: totalPage,
+      result: response.rows,
     });
   } catch (error) {
     res.status(500).json({ msg: error.message });
