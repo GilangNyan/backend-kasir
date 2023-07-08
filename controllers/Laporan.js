@@ -93,7 +93,7 @@ export const getLaporanBulanan = async (req, res) => {
   const order = req.query.orderBy || "tanggal";
   const orderDir = req.query.orderDir || "ASC";
   const search = req.query.search || "";
-  const bulan = req.query.bulan || "2023-06";
+  const bulan = req.query.bulan || "2023-07";
   let offset = (parseInt(page) - 1) * parseInt(limit);
 
   const selectedBulan = new Date(bulan);
@@ -171,7 +171,10 @@ export const getLaporanBulanan = async (req, res) => {
     const listFaktur = selectedMonthFaktur.map((transaksi) => transaksi.faktur);
     const totalled = await TransaksiDetail.findOne({
       attributes: [
-        [Sequelize.fn("count", Sequelize.col("transaksiFaktur")), "faktur"],
+        [
+          Sequelize.fn("count", Sequelize.literal("DISTINCT(transaksiFaktur)")),
+          "faktur",
+        ],
         [Sequelize.fn("sum", Sequelize.literal("hargaBeli * qty")), "modal"],
         [Sequelize.fn("sum", Sequelize.literal("hargaJual * qty")), "jual"],
         [Sequelize.fn("sum", Sequelize.literal("diskonRp * qty")), "diskonRp"],
@@ -270,7 +273,10 @@ export const getLaporanTahunan = async (req, res) => {
     const listFaktur = selectedYearFaktur.map((transaksi) => transaksi.faktur);
     const totalled = await TransaksiDetail.findOne({
       attributes: [
-        [Sequelize.fn("count", Sequelize.col("transaksiFaktur")), "faktur"],
+        [
+          Sequelize.fn("count", Sequelize.literal("DISTINCT(transaksiFaktur)")),
+          "faktur",
+        ],
         [Sequelize.fn("sum", Sequelize.literal("hargaBeli * qty")), "modal"],
         [Sequelize.fn("sum", Sequelize.literal("hargaJual * qty")), "jual"],
         [Sequelize.fn("sum", Sequelize.literal("diskonRp * qty")), "diskonRp"],
