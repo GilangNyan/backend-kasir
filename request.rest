@@ -98,3 +98,7 @@ GET http://localhost:5000/lapproduk
 ###
 # Forecast
 GET http://localhost:5000/forecast
+
+###
+# Insight Total Penjualan
+GET http://localhost:5000/insight

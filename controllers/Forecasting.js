@@ -6,6 +6,9 @@ export const getForecast = async (req, res) => {
   const produk = req.query.produk || "0070001";
   const periode = req.query.periode || 3;
   const hasilForecast = [];
+  const currentDate = new Date();
+  const latestMonth = currentDate.getMonth();
+  const latestYear = currentDate.getFullYear();
 
   try {
     const response = await TransaksiDetail.findAll({
@@ -21,7 +24,20 @@ export const getForecast = async (req, res) => {
         {
           model: Transaksi,
           attributes: [],
-          where: {},
+          where: {
+            [Op.and]: [
+              {
+                tanggal: {
+                  [Op.gte]: new Date("2022-01-01"),
+                },
+              },
+              {
+                tanggal: {
+                  [Op.lt]: new Date(latestYear, latestMonth, 1),
+                },
+              },
+            ],
+          },
         },
       ],
       group: ["tahun", "bulan"],
@@ -209,7 +225,6 @@ function isiBulanKosong(data) {
       let tahun = item.tahun;
       let bulan = item.bulan;
       if (genBulan.tahun === tahun && genBulan.bulan === bulan) {
-        console.log(genBulan.tahun === tahun && genBulan.bulan === bulan);
         ada = true;
         dataHasil.push(item);
         break;

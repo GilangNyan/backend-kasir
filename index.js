@@ -18,6 +18,7 @@ import SupplierRoute from "./routes/SupplierRoute.js";
 import StokRoute from "./routes/StokRoute.js";
 import LaporanRoute from "./routes/LaporanRoute.js";
 import ForecastingRoute from "./routes/ForecastingRoute.js";
+import DashboardRoute from "./routes/DashboardRoute.js";
 dotenv.config();
 
 const app = express();
@@ -65,6 +66,7 @@ app.use(SupplierRoute);
 app.use(StokRoute);
 app.use(LaporanRoute);
 app.use(ForecastingRoute);
+app.use(DashboardRoute);
 
 // store.sync();
 
