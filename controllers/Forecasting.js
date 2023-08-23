@@ -1,6 +1,8 @@
 import Transaksi from "../models/TransaksiModel.js";
 import TransaksiDetail from "../models/TransaksiDetailModel.js";
+import Forecast from "../models/ForecastingModel.js";
 import { Op, Sequelize } from "sequelize";
+import Produk from "../models/ProdukModel.js";
 
 export const getForecast = async (req, res) => {
   const produk = req.query.produk || "0070001";
@@ -242,3 +244,91 @@ function isiBulanKosong(data) {
   }
   return dataHasil;
 }
+
+export const simpanForecast = async (req, res) => {
+  const { periode, barcode, satuan, nilai } = req.body;
+  try {
+    await Forecast.findOne({
+      where: {
+        periode: periode,
+        produkBarcode: barcode,
+        satuanId: satuan,
+      },
+    }).then((data) => {
+      if (data) {
+        Forecast.update(
+          {
+            periode: periode,
+            produkBarcode: barcode,
+            satuanId: satuan,
+            nilai: nilai,
+          },
+          {
+            where: {
+              id: data.id,
+            },
+          }
+        );
+      } else {
+        Forecast.create({
+          periode: periode,
+          produkBarcode: barcode,
+          satuanId: satuan,
+          nilai: nilai,
+        });
+      }
+    });
+    res.status(201).json({ msg: "Hasil Forecast Berhasil Disimpan" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+export const getRekapForecast = async (req, res) => {
+  const page = req.query.page || 1;
+  const limit = req.query.perPage || 10;
+  const order = req.query.orderBy || "nilai";
+  const orderDir = req.query.orderDir || "DESC";
+  const search = req.query.search || "";
+  const periode = req.query.periode;
+  let offset = (parseInt(page) - 1) * parseInt(limit);
+  try {
+    const response = await Forecast.findAndCountAll({
+      where: {
+        periode: periode,
+      },
+      include: [Produk],
+      order: [[order, orderDir]],
+      offset: offset,
+      limit: parseInt(limit),
+    });
+    const totalPage = Math.ceil(response.count / limit);
+    res.status(200).json({
+      totalRows: response.count,
+      totalPage: totalPage,
+      result: response.rows,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+export const getTopForecast = async (req, res) => {
+  const periode = req.query.periode;
+  try {
+    const response = await Forecast.findAll({
+      where: {
+        periode: periode,
+      },
+      include: [Produk],
+      order: [["nilai", "DESC"]],
+      offset: 0,
+      limit: 10,
+    });
+    res.status(200).json({
+      result: response,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
