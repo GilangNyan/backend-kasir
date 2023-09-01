@@ -23,6 +23,20 @@ Content-Type: application/json
 }
 
 ###
+# Create Second User
+POST http://localhost:5000/user
+Content-Type: application/json
+
+{
+    "email": "ywisman@gmail.com",
+    "username": "admin",
+    "fullname": "Administrator",
+    "password": "admin1234",
+    "confPassword": "admin1234",
+    "roleId": "1"
+}
+
+###
 # Get All Users
 GET http://localhost:5000/user
 
